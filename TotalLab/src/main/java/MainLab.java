@@ -35,7 +35,7 @@ public class MainLab{
                         System.out.println("Please Enter Another Number(The Task has been completed!);");
                     }else {
                         val2 = 1;
-                        String[] argslist = {output + "output1/*.txt.segmented", output + "output2/"};
+                        String[] argslist = {output + "output1/", output + "output2/"};
                         MenPairs.main(argslist);
                         //System.out.println("Num2\r");
                     }

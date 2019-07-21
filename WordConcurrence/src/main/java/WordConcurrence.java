@@ -13,6 +13,7 @@ import org.ansj.domain.Term;
 import org.ansj.domain.Result;
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -40,8 +41,10 @@ public class WordConcurrence{
             inStream.close();
             //System.out.println(data);
             BufferedReader reader = new BufferedReader(new StringReader(data));*/
-            String namepath = WordConcurrenceMapper.class.getClassLoader().getResource("People_List_unique.txt").getPath();
-            BufferedReader reader = new BufferedReader(new FileReader(new File(namepath)));
+            //String namepath = WordConcurrenceMapper.class.getClassLoader().getResource("People_List_unique.txt").getPath();
+            //BufferedReader reader = new BufferedReader(new FileReader(new File(namepath)));
+            InputStream in=FileUtil.class.getClassLoader().getResource("People_List_unique.txt").openStream();
+            BufferedReader reader=new BufferedReader(new InputStreamReader(in));
             String PersonName;
             while((PersonName = reader.readLine()) != null){
                 //System.out.println(PersonName);
@@ -73,17 +76,26 @@ public class WordConcurrence{
             }
             FileSplit fileSplit = (FileSplit)context.getInputSplit();
             String fileName = fileSplit.getPath().getName();
-            context.write(new Text(fileName), new Text(all.toString()));
+            if(all.toString().length()>0){
+                context.write(new Text(fileName),new Text(all.toString()));
+            }
+            //context.write(new Text(fileName), new Text(all.toString()));
         }
     }
 
     public static class WordConcurrenceReducer extends Reducer<Text, Text, Text, Text>{
 
+        private MultipleOutputs<Text,Text> mos=null;
+
+        protected void setup(Context context) {
+            mos=new MultipleOutputs<>(context);
+        }
+
         @Override
         protected void reduce(Text key, Iterable<Text> values, Context context)
                 throws IOException, InterruptedException{
             //System.out.println("Here:reduce\r");
-            Iterator<Text> it = values.iterator();
+            /*Iterator<Text> it = values.iterator();
             StringBuilder all = new StringBuilder();
             if(it.hasNext()){
                 all.append(it.next().toString());
@@ -91,11 +103,22 @@ public class WordConcurrence{
             for(;it.hasNext();){
                 all.append(it.next().toString());
             }
+            mos.write(new Text(), new Text(all.toString()), key.toString());*/
+
+            for(Text text : values){
+                mos.write(new Text(text.toString().substring(0, text.toString().length() - 1)), null, key.toString());
+                //context.write(new Text(text.toString().substring(0, text.toString().length() - 1)), null);
+            }
             //context.write(key, new Text(all.toSting()));
-            String path_name = context.getConfiguration().get("path_write");
+            /*String path_name = context.getConfiguration().get("path_write");
             File file = new File(path_name + "Task1" + key.toString());
             PrintStream ps = new PrintStream(new FileOutputStream(file));
-            ps.println(all.toString());
+            ps.println(all.toString());*/
+        }
+
+        protected void cleanup(Context context)
+                throws IOException, InterruptedException {
+            mos.close();
         }
     }
 

@@ -6,11 +6,11 @@ project——MainLab是主程序，调用其他的project
 文件夹Task2直接放在桌面目录上，输入输出文件目录都在其中
 
 Task1(WordConcurrence):
-/home/santiago3/桌面/task2/task2/wuxia_novels/金庸*.txt.segmented
+/home/santiago3/桌面/task2/task2/novels/
 /home/santiago3/桌面/task2/output1/
 
 Task2(MenPairs):
-/home/santiago3/桌面/task2/output1/Task1*.txt.segmented
+/home/santiago3/桌面/task2/output1/
 /home/santiago3/桌面/task2/output2/
 
 Task3(MenMap):
@@ -29,3 +29,7 @@ Task5(LPA):
 Task6(LabelProcess):
 /home/santiago3/桌面/task2/output5/FinalLabel/part-r-00000
 /home/santiago3/桌面/task2/output6/
+
+整合后的Task(TotalLab——输入简单化):
+/home/santiago3/桌面/task2/task2/novels/
+/home/santiago3/桌面/task2/
