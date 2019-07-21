@@ -40,8 +40,10 @@ public class WordConcurrence{
             inStream.close();
             //System.out.println(data);
             BufferedReader reader = new BufferedReader(new StringReader(data));*/
-            String namepath = WordConcurrenceMapper.class.getClassLoader().getResource("People_List_unique.txt").getPath();
-            BufferedReader reader = new BufferedReader(new FileReader(new File(namepath)));
+            /*String namepath = WordConcurrenceMapper.class.getClassLoader().getResource("People_List_unique.txt").getPath();
+            BufferedReader reader = new BufferedReader(new FileReader(new File(namepath)));*/
+            InputStream in=FileUtil.class.getClassLoader().getResource("People_List_unique.txt").openStream();
+            BufferedReader reader=new BufferedReader(new InputStreamReader(in));
             String PersonName;
             while((PersonName = reader.readLine()) != null){
                 //System.out.println(PersonName);
@@ -93,19 +95,19 @@ public class WordConcurrence{
             }
             //context.write(key, new Text(all.toSting()));
             String path_name = context.getConfiguration().get("path_write");
-            File file = new File(path_name + "Task1" + key.toString());
+            File file = new File(path_name + key.toString());
             PrintStream ps = new PrintStream(new FileOutputStream(file));
             ps.println(all.toString());
         }
     }
 
     public static void main(String[] args) throws Exception{
-        System.out.println("File Read Path:");
+        /*System.out.println("File Read Path:");
         Scanner sc1 = new Scanner(System.in);
         String path_r = sc1.nextLine();
         System.out.println("File Written Path:");
         Scanner sc2 = new Scanner(System.in);
-        String path_w = sc2.nextLine();
+        String path_w = sc2.nextLine();*/
         /*System.out.println("File of People's Name Path on HDFS:");  //absolute path without start named HDFS
         Scanner sc3 = new Scanner(System.in);
         String path_name = sc3.nextLine();*/
@@ -113,7 +115,8 @@ public class WordConcurrence{
         Configuration conf = new Configuration();
         Job job = new Job(conf, "WordConcurrence");
         //job.getConfiguration().set("path_name", path_name);
-        job.getConfiguration().set("path_write", path_w);
+        //job.getConfiguration().set("path_write", path_w);
+        job.getConfiguration().set("path_write", args[1]);
         job.setJarByClass(WordConcurrence.class);
         job.setInputFormatClass(TextInputFormat.class);
         job.setMapperClass(WordConcurrenceMapper.class);
@@ -122,8 +125,10 @@ public class WordConcurrence{
         job.setMapOutputValueClass(Text.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
-        FileInputFormat.addInputPath(job, new Path(path_r));
-        FileOutputFormat.setOutputPath(job, new Path(path_w));
+        //FileInputFormat.addInputPath(job, new Path(path_r));
+        //FileOutputFormat.setOutputPath(job, new Path(path_w));
+        FileInputFormat.addInputPath(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
         job.waitForCompletion(true);
     }
 }

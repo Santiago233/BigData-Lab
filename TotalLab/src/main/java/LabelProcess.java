@@ -51,7 +51,7 @@ public class LabelProcess{
         Configuration conf = new Configuration();
         Job job = new Job(conf, "LabelProcess");
 
-        System.out.println("File Read Path:");
+        /*System.out.println("File Read Path:");
         Scanner sc1 = new Scanner(System.in);
         String path_in = sc1.nextLine();
         System.out.println("File Written Path:");
@@ -60,7 +60,9 @@ public class LabelProcess{
         Path in = new Path(path_in);
         Path out = new Path(path_out);
         FileInputFormat.setInputPaths(job, in);
-        FileOutputFormat.setOutputPath(job, out);
+        FileOutputFormat.setOutputPath(job, out);*/
+        FileInputFormat.setInputPaths(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         job.setJarByClass(LabelProcess.class);
         job.setInputFormatClass(TextInputFormat.class);

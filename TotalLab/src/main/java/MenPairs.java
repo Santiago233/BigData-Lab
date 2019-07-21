@@ -118,7 +118,7 @@ public class MenPairs{
         Configuration conf = new Configuration();
         Job job = new Job(conf, "MenPairs");
 
-        System.out.println("File Read Path:");
+        /*System.out.println("File Read Path:");
         Scanner sc1 = new Scanner(System.in);
         String path_in = sc1.nextLine();
         System.out.println("File Written Path:");
@@ -128,7 +128,10 @@ public class MenPairs{
         Path in = new Path(path_in);
         Path out = new Path(path_out);
         FileInputFormat.setInputPaths(job, in);
-        FileOutputFormat.setOutputPath(job, out);
+        FileOutputFormat.setOutputPath(job, out);*/
+        job.getConfiguration().set("path_out", args[1]);
+        FileInputFormat.setInputPaths(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         job.setJarByClass(MenPairs.class);
         job.setInputFormatClass(TextInputFormat.class);

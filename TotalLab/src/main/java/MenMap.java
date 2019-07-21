@@ -87,6 +87,7 @@ public class MenMap{
 
         protected void reduce(Text key, Iterable<Text> values, Context context)
             throws IOException, InterruptedException{
+            MainLab.N ++;
             for(Text value : values){
                 context.write(key, value);
             }
@@ -97,7 +98,7 @@ public class MenMap{
         Configuration conf = new Configuration();
         Job job = new Job(conf, "MenMap");
 
-        System.out.println("File Read Path:");
+        /*System.out.println("File Read Path:");
         Scanner sc1 = new Scanner(System.in);
         String path_in = sc1.nextLine();
         System.out.println("File Written Path:");
@@ -107,7 +108,10 @@ public class MenMap{
         Path in = new Path(path_in);
         Path out = new Path(path_out);
         FileInputFormat.setInputPaths(job, in);
-        FileOutputFormat.setOutputPath(job, out);
+        FileOutputFormat.setOutputPath(job, out);*/
+        job.getConfiguration().set("path_out", args[1]);
+        FileInputFormat.setInputPaths(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
         job.setJarByClass(MenMap.class);
         job.setInputFormatClass(TextInputFormat.class);
