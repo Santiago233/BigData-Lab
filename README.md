@@ -30,6 +30,8 @@ Task6(LabelProcess):
 /home/santiago3/桌面/task2/output5/FinalLabel/part-r-00000
 /home/santiago3/桌面/task2/output6/
 
-整合后的Task(TotalLab——输入简单化):
+整合后的Task(FinalLab——输入简单化，同时完成了配置打包jar):
 /home/santiago3/桌面/task2/task2/novels/
 /home/santiago3/桌面/task2/
+
+ps:原本的TotalLab整合后并不能在集群上跑通(jdk1.7)，会出现各种奇怪的问题，新的FinalLab则解决了这些问题！
